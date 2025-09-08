@@ -1,4 +1,3 @@
-cat > README.md << 'EOF'
 # Checkpoint FIAP: Demon Slayer App
 
 Este é um aplicativo móvel desenvolvido como parte de um checkpoint da FIAP. O objetivo é criar um catálogo de personagens do anime/mangá *Demon Slayer (Kimetsu no Yaiba)*, consumindo uma API pública para exibir informações detalhadas sobre cada personagem.
