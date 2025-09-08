@@ -1,7 +1,6 @@
 import { useLocalSearchParams } from 'expo-router';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import {
-    ActivityIndicator,
     Image,
     ImageBackground,
     ScrollView,
@@ -10,105 +9,61 @@ import {
     Text,
     View,
 } from 'react-native';
-import { CharacterDetails } from '../../types/index';
 
-const API_BASE_URL = 'https://www.demonslayer-api.com/api/v1/characters';
 
 const humanBackground = require('../../assets/images/background-human.png');
 const demonBackground = require('../../assets/images/background-demon.png');
 
 export default function CharacterDetailsScreen() {
-  const { id } = useLocalSearchParams();
-  const [character, setCharacter] = useState<CharacterDetails | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const { characterData } = useLocalSearchParams();
 
-  useEffect(() => {
-    if (!id) return;
-
-    const fetchCharacter = async () => {
-      try {
-        console.log("Buscando personagem com ID:", id);
-
-        const response = await fetch(`${API_BASE_URL}?id=${id}`, {
-          headers: { 'Origin': 'x-requested-with' },
-        });
-
-        console.log("Status da resposta:", response.status);
-
-        if (!response.ok) {
-          throw new Error(`Erro na API: ${response.status}`);
-        }
-
-        const data = await response.json();
-        console.log("Dados recebidos:", data);
-
-        if (data && data.length > 0) {
-          setCharacter(data[0]);
-        } else {
-          setError('Personagem não encontrado.');
-        }
-      } catch (err) {
-        console.error('Erro ao buscar dados:', err);
-        setError('Erro ao buscar dados. Verifique sua conexão ou tente novamente.');
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchCharacter();
-  }, [id]);
-
-  if (loading) {
+  if (typeof characterData !== 'string') {
     return (
       <View style={styles.centered}>
-        <ActivityIndicator size="large" color="#fff" />
+        <Text style={styles.errorText}>Dados do personagem não encontrados.</Text>
       </View>
     );
   }
 
-  if (error) {
-    return (
-      <View style={styles.centered}>
-        <Text style={styles.errorText}>{error}</Text>
-      </View>
-    );
-  }
-
-  if (!character) {
-    return (
-      <View style={styles.centered}>
-        <Text style={styles.errorText}>Personagem não encontrado.</Text>
-      </View>
-    );
-  }
-
+  const character: any = JSON.parse(characterData);
+  
   const backgroundImage = character.race === 'Demon' ? demonBackground : humanBackground;
 
   return (
     <ImageBackground source={backgroundImage} style={styles.background}>
       <StatusBar barStyle="light-content" />
       <ScrollView contentContainerStyle={styles.scrollContainer}>
-        {character.img ? (
-          <Image source={{ uri: character.img }} style={styles.characterImage} />
-        ) : (
-          <Text style={styles.errorText}>Imagem não disponível</Text>
-        )}
+        
+        <Image source={{ uri: character.img }} style={styles.characterImage} />
+        
         <View style={styles.detailsCard}>
-          <Text style={styles.name}>{character?.name ?? 'Sem nome'}</Text>
-          <View style={styles.statsContainer}>
-            <Text style={styles.statText}>Idade: {character?.age ?? 'Desconhecida'}</Text>
-            <Text style={styles.statText}>Raça: {character?.race ?? 'Desconhecida'}</Text>
-            <Text style={styles.statText}>Gênero: {character?.gender ?? 'Desconhecido'}</Text>
+          <Text style={styles.name}>{character.name}</Text>
+
+          <View style={styles.badgeContainer}>
+            {character.age && (
+              <View style={[styles.badge, {backgroundColor: '#e0e0e0'}]}>
+                <Text style={styles.badgeText}>Idade: {character.age}</Text>
+              </View>
+            )}
+            {character.race && (
+              <View style={[styles.badge, {backgroundColor: '#ffeadb'}]}>
+                <Text style={[styles.badgeText, {color: '#d96609'}]}>Raça: {character.race}</Text>
+              </View>
+            )}
+            {character.gender && (
+              <View style={[styles.badge, {backgroundColor: '#e0e0e0'}]}>
+                <Text style={styles.badgeText}>Gênero: {character.gender}</Text>
+              </View>
+            )}
           </View>
-          <Text style={styles.description}>
-            {character?.description ?? 'Sem descrição disponível'}
-          </Text>
-        </View>
-        <View style={styles.quoteCard}>
-          <Text style={styles.quoteText}>
-            {character?.quote ? `"${character.quote}"` : 'Sem frase famosa'}
-          </Text>
+          
+          {character.description && <Text style={styles.description}>{character.description}</Text>}
+          
+          {character.quote && (
+            <View style={styles.quoteCard}>
+              <Text style={styles.quoteText}>{`"${character.quote}"`}</Text>
+            </View>
+          )}
         </View>
       </ScrollView>
     </ImageBackground>
@@ -116,39 +71,74 @@ export default function CharacterDetailsScreen() {
 };
 
 const styles = StyleSheet.create({
-  background: { flex: 1 },
-  scrollContainer: { padding: 20, alignItems: 'center' },
-  centered: { flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#1a1a1a' },
-  errorText: { color: '#fff', fontSize: 18, textAlign: 'center' },
-  characterImage: {
-    width: 250,
-    height: 250,
-    borderRadius: 125,
-    borderWidth: 3,
-    borderColor: '#fff',
-    marginBottom: 20
-  },
-  detailsCard: {
-    backgroundColor: 'rgba(255, 255, 255, 0.9)',
-    borderRadius: 15,
-    padding: 20,
-    width: '100%',
-    alignItems: 'center',
-    marginBottom: 20
-  },
-  name: { fontSize: 28, fontWeight: 'bold', marginBottom: 10, color: '#000' },
-  statsContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    width: '100%',
-    marginBottom: 15,
-    borderTopWidth: 1,
-    borderBottomWidth: 1,
-    borderColor: '#ddd',
-    paddingVertical: 10
-  },
-  statText: { fontSize: 14, color: '#333' },
-  description: { fontSize: 16, textAlign: 'center', color: '#555' },
-  quoteCard: { backgroundColor: 'rgba(0, 0, 0, 0.7)', borderRadius: 10, padding: 15, width: '100%' },
-  quoteText: { fontSize: 16, fontStyle: 'italic', textAlign: 'center', color: '#fff' }
+    background: { flex: 1 },
+    scrollContainer: { paddingBottom: 40 }, 
+    centered: { flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#1a1a1a' },
+    errorText: { color: '#fff', fontSize: 18 },
+ 
+    characterImage: {
+      width: '100%',
+      height: 280,
+      resizeMode: 'contain',
+      marginTop: 20,
+    },
+   
+    detailsCard: {
+      backgroundColor: '#fff',
+      borderRadius: 20,
+      padding: 20,
+      marginHorizontal: 16,
+      marginTop: -40, 
+      alignItems: 'center',
+      shadowColor: '#000',
+      shadowOffset: { width: 0, height: 4 },
+      shadowOpacity: 0.1,
+      shadowRadius: 10,
+      elevation: 5,
+    },
+    name: {
+      fontSize: 28,
+      fontWeight: 'bold',
+      color: '#000',
+      marginBottom: 16,
+    },
+  
+    badgeContainer: {
+      flexDirection: 'row',
+      justifyContent: 'center',
+      flexWrap: 'wrap',
+      marginBottom: 16,
+    },
+    badge: {
+      borderRadius: 8,
+      paddingVertical: 6,
+      paddingHorizontal: 12,
+      marginHorizontal: 4,
+    },
+    badgeText: {
+      fontSize: 14,
+      fontWeight: '600',
+      color: '#333',
+    },
+   
+    description: {
+      fontSize: 16,
+      textAlign: 'left',
+      color: '#555',
+      alignSelf: 'stretch', 
+      marginBottom: 16,
+    },
+
+     quoteCard: {
+      backgroundColor: '#1a1a1a', 
+      borderRadius: 10,
+      padding: 15,
+      width: '100%',
+    },
+    quoteText: {
+      fontSize: 16,
+      fontStyle: 'italic',
+      textAlign: 'center',
+      color: '#fff',
+    }
 });

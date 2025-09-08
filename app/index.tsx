@@ -9,13 +9,20 @@ export default function CharacterListScreen() {
 
   useEffect(() => {
     fetch('https://www.demonslayer-api.com/api/v1/characters?limit=45')
-      .then((response) => response.json())
+      .then((res) => res.json())
       .then((data) => {
-        setCharacters(data);
-        setLoading(false);
+
+        if (Array.isArray(data)) {
+          setCharacters(data);
+        } else {
+          console.log('A API não retornou um array de personagens:', data);
+        }
       })
       .catch((error) => {
         console.error("Erro ao buscar dados:", error);
+      })
+    
+      .finally(() => {
         setLoading(false);
       });
   }, []);
@@ -31,13 +38,21 @@ export default function CharacterListScreen() {
   return (
     <View style={styles.container}>
       <StatusBar barStyle="dark-content" />
+  
       <Image source={require('../assets/images/logo.png')} style={styles.logo} />
       <Text style={styles.title}>Escolha seu personagem abaixo</Text>
       <FlatList
         data={characters}
         keyExtractor={(item) => item.id.toString()}
         renderItem={({ item }) => (
-          <Link href={`/details/${item.id}`} asChild>
+       
+          <Link
+            href={{
+              pathname: `/details/${item.id}`,
+              params: { characterData: JSON.stringify(item) }
+            }}
+            asChild
+          >
             <Pressable style={styles.itemContainer}>
               <Image source={{ uri: item.img }} style={styles.itemImage} />
               <Text style={styles.itemText}>{item.name}</Text>
