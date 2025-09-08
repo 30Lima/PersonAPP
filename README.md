@@ -46,7 +46,7 @@ Siga os passos abaixo para executar o projeto em seu ambiente de desenvolvimento
 
 **1. Clone o Repositório**
 ```bash
-git clone <url-do-seu-repositorio>](https://github.com/30Lima/PersonAPP.git)
+git clone (https://github.com/30Lima/PersonAPP.git)
 cd DemonSlayerApp
 ```
 
