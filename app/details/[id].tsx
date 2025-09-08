@@ -25,6 +25,7 @@ export default function CharacterDetailsScreen() {
       </View>
     );
   }
+  
 
   const character: any = JSON.parse(characterData);
   
