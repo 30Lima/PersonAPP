@@ -1,50 +1,76 @@
-# Welcome to your Expo app 👋
+cat > README.md << 'EOF'
+# Checkpoint FIAP: Demon Slayer App
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+Este é um aplicativo móvel desenvolvido como parte de um checkpoint da FIAP. O objetivo é criar um catálogo de personagens do anime/mangá *Demon Slayer (Kimetsu no Yaiba)*, consumindo uma API pública para exibir informações detalhadas sobre cada personagem.
 
-## Get started
+O aplicativo foi construído utilizando React Native com o framework Expo e TypeScript, focando em uma navegação simples e uma interface visualmente agradável que se adapta ao personagem selecionado.
 
-1. Install dependencies
+## 📱 Telas
 
-   ```bash
-   npm install
-   ```
+O aplicativo é composto por duas telas principais:
 
-2. Start the app
+1.  **Tela de Listagem:** Exibe todos os personagens obtidos da API em uma lista rolável. Cada item da lista mostra a imagem e o nome do personagem.
+2.  **Tela de Detalhes:** Ao selecionar um personagem, o usuário é levado a esta tela, que exibe informações mais detalhadas como nome, imagem, e outros atributos. O fundo da tela muda dinamicamente dependendo da raça do personagem (Humano ou Demônio).
 
-   ```bash
-   npx expo start
-   ```
+## ✨ Funcionalidades Principais
 
-In the output, you'll find options to open the app in a
+-   Listagem de 45 personagens de *Demon Slayer*.
+-   Navegação da tela de lista para a de detalhes.
+-   Passagem de dados de personagens entre as telas para otimizar o desempenho e evitar chamadas de API desnecessárias.
+-   Fundo dinâmico na tela de detalhes que muda de acordo com a raça do personagem.
+-   Interface de usuário limpa e inspirada no design proposto.
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+## 🛠️ Tecnologias Utilizadas
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+-   **React Native:** Framework para desenvolvimento de aplicativos móveis multiplataforma.
+-   **Expo:** Plataforma e conjunto de ferramentas para facilitar o desenvolvimento e a execução de apps React Native.
+-   **Expo Router:** Sistema de navegação baseado em arquivos para criar rotas de forma declarativa.
+-   **TypeScript:** Superset do JavaScript que adiciona tipagem estática ao código, aumentando a robustez e a manutenibilidade.
 
-## Get a fresh project
+## ⚙️ Pré-requisitos
 
-When you're ready, run:
+Antes de começar, você precisará ter o seguinte software instalado em sua máquina:
 
+-   [Node.js](https://nodejs.org/en/) (versão LTS recomendada)
+-   NPM ou Yarn
+-   Opcional: Git para clonar o repositório.
+
+Para visualizar o aplicativo, você precisará de:
+
+-   O app **Expo Go** instalado em um celular físico (Android ou iOS).
+-   *OU* um emulador Android configurado via Android Studio.
+-   *OU* um simulador iOS configurado via Xcode (apenas em macOS).
+
+## 🚀 Como Rodar o Projeto
+
+Siga os passos abaixo para executar o projeto em seu ambiente de desenvolvimento local.
+
+**1. Clone o Repositório**
 ```bash
-npm run reset-project
+git clone <url-do-seu-repositorio>](https://github.com/30Lima/PersonAPP.git)
+cd DemonSlayerApp
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+**2. Instale as Dependências**
+Execute o comando abaixo para instalar todos os pacotes necessários definidos no package.json.
+```bash
+npm install
+```
 
-## Learn more
+**4. Inicie o Servidor de Desenvolvimento**
+Este comando inicia o servidor do Expo, que permite que você rode o aplicativo.
+```bash
+npx expo start
+```
 
-To learn more about developing your project with Expo, look at the following resources:
+**5. Abra o Aplicativo**
+Após o passo anterior, um QR Code aparecerá no terminal.
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+No celular: Abra o app Expo Go e escaneie o QR Code.
+No emulador: Pressione a (para Android) ou i (para iOS) no terminal.
 
-## Join the community
+## 🌐 API
+Este projeto utiliza a Demon Slayer API para obter os dados dos personagens. Agradecimentos aos criadores da API por disponibilizarem os dados publicamente.
 
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+## 👨‍💻 Desenvolvedor
+Desenvolvido por Pedro Lima.
