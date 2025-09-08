@@ -1,13 +1,13 @@
 import { useLocalSearchParams } from 'expo-router';
 import React from 'react';
 import {
-    Image,
-    ImageBackground,
-    ScrollView,
-    StatusBar,
-    StyleSheet,
-    Text,
-    View,
+  Image,
+  ImageBackground,
+  ScrollView,
+  StatusBar,
+  StyleSheet,
+  Text,
+  View,
 } from 'react-native';
 
 
@@ -16,6 +16,7 @@ const demonBackground = require('../../assets/images/background-demon.png');
 
 export default function CharacterDetailsScreen() {
   const { characterData } = useLocalSearchParams();
+
 
   if (typeof characterData !== 'string') {
     return (
